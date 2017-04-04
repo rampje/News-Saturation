@@ -1,0 +1,51 @@
+---
+title: "Filtering Scraped News Data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+```
+
+
+Read in the most current filter table:
+
+```{r, echo=FALSE}
+filter_table <- list.files()[grepl("filter_frame", list.files())]
+filter_table
+```
+
+```{r}
+ft <- read.csv(filter_table, stringsAsFactors = FALSE)
+glimpse(ft)
+```
+
+Read in news tables of choice:
+
+```{r}
+news_tables <- list.files()[grepl("news", list.files())]
+nt <- read.csv(news_tables[1], stringsAsFactors = FALSE)
+glimpse(nt)
+```
+
+Use filter table to filter out the scraped news table
+
+```{r}
+nt <- nt %>% filter(!(title %in% ft$title))
+glimpse(nt)
+```
+
+```{r}
+head(nt)
+```
+
+Write first version of news table as flatfile:
+
+```{r}
+write.csv(nt, "news_table.csv", row.names = FALSE)
+```
+
