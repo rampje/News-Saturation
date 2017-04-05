@@ -4,7 +4,7 @@
 
 This repository contains source code and tools for research around a phenomenon I call **news saturation**.
 
-News saturation is not a new phenomenon, but it has been more apparent since the 2016 US presidential election. It happens when a particular topic or story is disproportionately covered by the news media. This results in casual observers of the news no
+News saturation is not a new phenomenon, but it has been more apparent since the 2016 US presidential election. It happens when a particular topic or story is disproportionately covered by the news media. This results in casual observers of the news not getting a full picture of important events affecting their lives because too many news media resources are being used to cover the saturation topic.
 
 Many important events of great consequence happened silently in the maelstrom of the election and the days since Donald Trump took office. Here is a working list of some of these events (not complete obviously):
 
