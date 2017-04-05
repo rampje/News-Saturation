@@ -6,6 +6,7 @@ import scrapy
 class NewsArticle(scrapy.Item):
     title = scrapy.Field()
     link = scrapy.Field()
+    site = scrapy.Field()
 
 # Spider that scrapes articles for news sites
 class NewsSpider(scrapy.Spider):
@@ -32,6 +33,7 @@ class NewsSpider(scrapy.Spider):
 
             news['title'] = url.xpath('text()').extract()
             news['link'] = url.xpath('@href').extract()
+            news['site'] = url.xpath('//title/text()').extract_first()
 
             yield news
 
