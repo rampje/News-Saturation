@@ -121,14 +121,22 @@ $(document).ready(function () {
 
 <div id="news-saturation" class="section level1">
 <h1>News-Saturation</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
 <p>This repository contains source code and tools for research around a phenomenon I call <strong>news saturation</strong>.</p>
-<p>News saturation is not a new phenomenon, but it has been more apparent since the 2016 US presidential election. It happens when a particular topic or story is disproportionately covered by the news media. This results in casual observers of the news no</p>
+<p>News saturation is not a new phenomenon, but it has been more apparent since the 2016 US presidential election. It happens when a particular topic or story is disproportionately covered by the news media. This results in casual observers of the news not getting a full picture of important events affecting their lives because too many news media resources are being used to cover the saturation topic.</p>
 <p>Many important events of great consequence happened silently in the maelstrom of the election and the days since Donald Trump took office. Here is a working list of some of these events (not complete obviously):</p>
 <ul>
 <li>Talks to pass TPP summer of 2015 (eventually this became an issue at the end of 2015)</li>
 <li>News about Russian envolvment in election that came out in 2016</li>
 <li>Bill allowing ISPs to sell customer browsing information (occured during coverage of the attempt to vote on healthcare reform bill)</li>
 </ul>
+<div id="tools-and-methods" class="section level3">
+<h3>Tools and methods</h3>
+<p>A big component of this research is observing daily changes in the news. The current strategy to capture this data is through the deployment of a web crawler targetting news sites and extracting news article data. This data is then filtered, processed, and further analyzed in R.</p>
+<p>I am building the web crawlers using a python web-crawling framework called scrapy. The R code is being stored on R Markdown files.</p>
+</div>
+</div>
 </div>
 
 
