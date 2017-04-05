@@ -15,6 +15,7 @@ library(dplyr)
 Read in the most current filter table:
 
 ```{r, echo=FALSE}
+wd <- paste0(getwd(),"/news data/")
 filter_table <- list.files()[grepl("filter_frame", list.files())]
 filter_table
 ```
@@ -27,10 +28,12 @@ glimpse(ft)
 Read in news tables of choice:
 
 ```{r}
-news_tables <- list.files()[grepl("news", list.files())]
+news_tables <- list.files(wd)
+news_tables <- paste0(wd, news_tables)
 nt <- read.csv(news_tables[1], stringsAsFactors = FALSE)
 glimpse(nt)
 ```
+
 
 Use filter table to filter out the scraped news table
 

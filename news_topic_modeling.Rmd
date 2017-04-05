@@ -1,0 +1,73 @@
+---
+title: "News Topic Modeling"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This markdown document contains R code for processing *news_table.csv*. The R code processes the article titles further in order to represent them using the [vector space model (VSM)](https://en.wikipedia.org/wiki/Vector_space_model).
+
+```{r, message=FALSE, warning=FALSE}
+library(tm)
+library(tidyverse)
+```
+
+
+```{r}
+titles <- read.csv("news_table.csv", stringsAsFactors = FALSE)
+titles <- titles$title 
+head(titles)
+```
+
+Text processing pipeline 
+
+```{r}
+titles %>%
+  tolower %>%
+  removePunctuation %>%
+  removeWords(stopwords("en")) %>%
+  map(function(x) gsub("[\r\n\t]", "",x)) ->
+titles
+
+head(titles)
+```
+
+Before getting term document matrix I'm going to take a quick detour here and look at what the most common words are
+
+```{r}
+words <- paste0(titles, collapse = " ")
+words <- unlist(strsplit(words, " "))
+
+head(words, 20)
+```
+
+```{r}
+words <- words[words != ""]
+head(words, 20)
+```
+
+```{r}
+word_freqs <- words %>% 
+                    table %>% 
+                    sort(decreasing = TRUE) %>% 
+                    data.frame(stringsAsFactors = FALSE)
+names(word_freqs) <- c("word","freq")
+glimpse(word_freqs)
+head(word_freqs)
+```
+
+```{r}
+ggplot(data = word_freqs[1:25,],
+       aes(x=word, y=freq)) + 
+       geom_bar(stat = "identity") +
+       theme(
+          axis.title = element_text(size = 14),
+          axis.text = element_text(angle = 40, size=12),
+          axis.title.y = element_text(size = 14),
+          axis.text.y = element_text(size = 12)) +
+       ggtitle("Word frequencies from news article title scrape (4/3/2017)") + 
+       xlab("Words") + ylab("Frequency")
+```
+
