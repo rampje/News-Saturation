@@ -16,7 +16,7 @@ Many important events of great consequence happened silently in the maelstrom of
 
 A big component of this research is observing daily changes in the news. The current strategy to capture this data is through the deployment of a web crawler targetting news sites and extracting news article data. This data is then filtered, processed, and further analyzed in R.
 
-I am building the web crawlers using a python web-crawling framework called scrapy. The R code is being stored on R Markdown files. 
+I am building the web crawlers using a python web-crawling framework called [**scrapy**](https://scrapy.org/). The R code is being stored on [R Markdown](http://rmarkdown.rstudio.com/) files. 
 
 
 

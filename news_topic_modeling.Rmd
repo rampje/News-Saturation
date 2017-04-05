@@ -16,8 +16,8 @@ library(tidyverse)
 
 
 ```{r}
-titles <- read.csv("news_table.csv", stringsAsFactors = FALSE)
-titles <- titles$title 
+titles_df <- read.csv("news_table.csv", stringsAsFactors = FALSE)
+titles <- titles_df$title 
 head(titles)
 ```
 
@@ -69,5 +69,24 @@ ggplot(data = word_freqs[1:25,],
           axis.text.y = element_text(size = 12)) +
        ggtitle("Word frequencies from news article title scrape (4/3/2017)") + 
        xlab("Words") + ylab("Frequency")
+```
+
+#### Back to more processing of text
+
+```{r}
+news_docs <- VectorSource(titles)
+
+news_corpus <- Corpus(news_docs)
+news_corpus
+```
+
+### Need to get site names
+
+This might be better specified in the crawler script
+
+```{r}
+titles_df$site <- gsub("^.*www.", "", titles_df$link)
+titles_df$site <- gsub(".com.*", "", titles_df$site)
+head(sort(table(titles_df$site), decreasing = TRUE), 15)
 ```
 
