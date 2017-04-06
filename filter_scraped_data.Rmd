@@ -8,7 +8,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-library(dplyr)
+library(tidyverse)
+library(tm)
 ```
 
 
@@ -30,7 +31,7 @@ Read in news tables of choice:
 ```{r}
 news_tables <- list.files(wd)
 news_tables <- paste0(wd, news_tables)
-nt <- read.csv(news_tables[1], stringsAsFactors = FALSE)
+nt <- read.csv(news_tables[5], stringsAsFactors = FALSE)
 glimpse(nt)
 ```
 
@@ -45,6 +46,61 @@ glimpse(nt)
 ```{r}
 head(nt)
 ```
+
+```{r}
+nt <- nt[grepl("http",nt$link),]
+glimpse(nt)
+```
+
+```{r}
+nt$title_wordcnt <- map_dbl(gregexpr("\\S+", nt$title), length)
+
+nt <- nt %>% filter(title_wordcnt > 3)
+glimpse(nt)
+```
+
+For purposes of exploration we'll look at term frequencies by site
+
+```{r}
+sites <- unique(nt$site)
+site_list <- vector("list", length(sites))
+
+sites
+```
+
+```{r}
+for(x in seq_along(sites)){
+  site_list[[x]] <- nt$title[nt$site == sites[x]]}
+summary(site_list)
+```
+
+```{r}
+site_list <- map(site_list, function(x) paste(x, collapse ="."))
+
+site_list %>%
+  map(removePunctuation) %>%
+  map(tolower) %>%
+  map(removeNumbers) ->
+site_list
+
+# brute force for now
+site_list <- map(site_list, function(x) gsub("???????","",x))
+site_list <- map(site_list, function(x) gsub("????????","",x))
+site_list <- map(site_list, function(x) gsub("????????","",x))
+site_list <- map(site_list, function(x) gsub("????????","",x))
+site_list[[1]]
+```
+
+```{r}
+site_corpus <- VectorSource(site_list)
+site_corpus <- Corpus(site_corpus)
+
+
+tdm <- TermDocumentMatrix(site_corpus)
+inspect(tdm[1:20,])
+```
+
+
 
 Write first version of news table as flatfile:
 
