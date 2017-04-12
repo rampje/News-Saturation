@@ -2,6 +2,9 @@
 
 import scrapy
 
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
+
 # NewsArticle class represents the object obtained by the spider
 class NewsArticle(scrapy.Item):
     title = scrapy.Field()
@@ -9,7 +12,7 @@ class NewsArticle(scrapy.Item):
     site = scrapy.Field()
 
 # Spider that scrapes articles for news sites
-class NewsSpider(scrapy.Spider):
+class NewsSpider(CrawlSpider):
     name = 'newsspider'
     start_urls = ['https://www.yahoo.com/news/',
                   'http://www.nytimes.com',
@@ -33,7 +36,7 @@ class NewsSpider(scrapy.Spider):
 
             news['title'] = url.xpath('text()').extract()
             news['link'] = url.xpath('@href').extract()
-            news['site'] = url.xpath('//title/text()').extract_first()
+            news['site'] = url.xpath('//title/text()').extract()
 
             yield news
 
