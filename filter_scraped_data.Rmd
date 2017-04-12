@@ -34,6 +34,21 @@ news_tables <- paste0(wd, news_tables)
 nt <- read.csv(news_tables[5], stringsAsFactors = FALSE)
 glimpse(nt)
 ```
+```{r}
+news_tables
+```
+
+Read in all tables at once 
+
+```{r}
+news_data <- map(news_tables, read.csv)
+summary(news_data)
+```
+
+```{r}
+
+```
+
 
 
 Use filter table to filter out the scraped news table
