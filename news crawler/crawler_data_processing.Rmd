@@ -1,0 +1,39 @@
+---
+title: "Crawler Data Processing"
+output: html_document
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tm)
+library(magrittr)
+```
+
+Read in current source files. They will be used to create a flatfile containing filterable characters.
+
+```{r}
+x <- paste0(getwd(),"/news data/")
+source_files <- paste0(x, list.files(x))
+source_files
+```
+
+```{r}
+news <- map(source_files, function(x) read.csv(x, stringsAsFactors=F))
+summary(news)
+```
+
+```{r}
+map(news, names)
+```
+
+Splitting the tables. Merge seems to not be working with lists larger than 4 elements...
+```{r}
+titles <- map(news, function(x) x$title)
+title <- paste0(titles, collapse = " ")
+title <- unlist(strsplit(title, " "))
+title <- data.frame(title, stringsAsFactors = F)
+head(title, 10)
+
+```
+
+
