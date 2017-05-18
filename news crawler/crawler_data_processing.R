@@ -1,8 +1,7 @@
 library(tidyverse)
 library(tm)
 
-source_file <- paste0("D:/Projects/OMTM/News Desaturation/",
-                      "news_04032017_1954.csv")
+source_files <- paste0(getwd(), "/news data/")
 
 news <- read.csv(source_file, stringsAsFactors = FALSE)
 
