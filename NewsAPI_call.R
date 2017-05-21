@@ -1,8 +1,50 @@
 library(httr)
 library(jsonlite)
 library(lubridate)
-library(dplyr)
+library(tidyverse)
+library(plyr)
+library(RODBC)
+library(RODBCext)
 source("D:/Projects/creds.R")
+
+# function to  write results to database
+writeNews <- function(df, db_connection){
+  
+  ##sets SQL server connection
+  myServer <- odbcDriverConnect(db_connection)
+  
+  #calls current database table 
+  oldTable <- sqlFetch(myServer, "top_news_full")
+  
+  # column names must align for joining
+  frameNames <- colnames(oldTable)
+  colnames(df)<- frameNames
+  
+  #prepares table for merge, sets classes to be the same
+  
+  oldTable[] <- lapply(oldTable, function(x) as.character(x))
+  df[] <- lapply(df, function(x) as.character(x))
+  
+  #updates tables where PKs match then creates intermediary table with non matching PKs
+  
+  #alternative method of using table of shite that is dif
+  
+  #intermediateTable<-anti_join(df,oldTable, by=  "articlestitle" )
+  
+  
+  finalTable <- rbind(oldTable,df, make.row.names=FALSE)
+  finalTable <- finalTable[with(finalTable, order(source,articlesauthor)),]
+  
+  
+  finalTable<- finalTable[!duplicated(finalTable$articlestitle),]
+  
+  
+  sqlDrop(myServer,"top_news_full")
+  sqlSave(myServer,finalTable,tablename = "top_news_full", rownames=FALSE)
+  
+  #close out connections 
+  odbcClose(myServer)
+}
 
 # access News API (https://newsapi.org/) to get headline articles
 sources <- c("associated-press","al-jazeera-english","bbc-news","bloomberg",
@@ -25,3 +67,17 @@ for(x in seq_along(sources)){
   allData[[x]] <- news.source}
 
 # convert list objects to dataframes
+myFrames <- ldply(allData, data.frame)
+
+# update DB
+writeNews(myFrames)
+
+
+# intialize table before using function 
+
+#myServer <- odbcDriverConnect(db_connection)
+#sqlSave(myServer,myFrames,tablename = "top_news_full" , rownames=FALSE)
+
+
+
+
