@@ -98,7 +98,8 @@ allData$articles.publishedAt <- allData$articles.publishedAt %>%
   
 # initialize database
 db <- dbConnect(RSQLite::SQLite(), dbname="news_saturation.sqlite")
-  
+#allData %>% dbWriteTable(conn = db, name = "top_news", overwrite = T) 
+ 
 # database refresh
 old_table <- dbGetQuery(db, "SELECT * FROM top_news")
 
@@ -114,7 +115,9 @@ allData$retrieval.time <- as.character(allData$retrieval.time)
 new_table <- full_join(old_table, allData)
 
 # overwrite db table with new table
-allData %>% dbWriteTable(conn = db, name = "top_news", overwrite=T)
+new_table %>% dbWriteTable(conn = db, name = "top_news", overwrite=T)
+dbDisconnect(db)
+
 
 
 # -----------------------------
