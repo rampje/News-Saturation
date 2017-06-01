@@ -7,6 +7,8 @@ library(RODBC)
 library(RODBCext)
 library(RSQLite)
 source("D:/Projects/creds.R")
+
+setwd("D:/Projects/News-Saturation/")
   
 
 # function to  write results to database
