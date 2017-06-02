@@ -1,17 +1,68 @@
-# News-Saturation
+# **News Saturation**
 
-## Introduction 
+We are developing a data pipeline to collect headlines scraped from news sites using [**News API**](https://newsapi.org/). We want to explore the way different news sites go about alerting their followers and spreading information. A few informal questions:
 
-This repository contains source code and tools for research around a phenomenon I call **news saturation**.
+* How do different news sites design and adapt their menu of headlines for their followers? 
+* How quickly do sites update their headlines with new stories? 
+* What feelings are the headlines designed to cause (if any)? 
+* Which news sites are breaking new stories?
 
-News saturation is not a new phenomenon, but it has been more apparent since the 2016 US presidential election. It happens when a particular topic or story is disproportionately covered by the news media. This results in casual observers of the news not getting a full picture of important events affecting their lives because too many news media resources are being used to cover the saturation topic.
+## **Contents of repository**:
 
-Many important events of great consequence happened silently in the maelstrom of the election and the days since Donald Trump took office. 
+###  [***NewsAPI_call.R***](https://github.com/rampje/News-Saturation/blob/master/NewsAPI_call.R)
+This script pulls data from News API, processes it, and adds the newest articles to a data base containing all the news data we have collected so far. The R script relies on packages to do the following with relative ease:
 
-### Tools and methods
+1. retrieve latest data from News API - ***httr***
 
-A big part of this research will be the regular collection news data from a variety of sources using [**News API**](https://newsapi.org/) and analyzing saturation topics. A shiny app will stream News API data to monitor the news in real time. The news will be collected in a database.
+2. convert JSON data to R-friendly data frame - ***jsonlite***
 
-In order to capture more granular changes in news the end goal of news capture would be through the deployment of a web crawler targetting news sites. The *news crawler* is being developed using a python web-crawling framework called [**scrapy**](https://scrapy.org/). 
+3. tidy the data  - ***tidyverse***
+
+4. connect to local SQLite database - ***RSQLite***
+
+5. query and update the database - ***RODBC***
+
+<br>
+
+A list of all the sites News API covers is [**here**](https://newsapi.org/sources). These are the 19 sources we are currently pulling news headlines from:
+
+
+ **associated-press**   | **reuters**
+------------------------|------------------------
+ **al-jazeera-english** | **the-economist**
+ **bbc-news**           | **the-huffington-post**
+ **bloomberg**          | **newsweek**
+ **business-insider**   | **the-new-york-times**
+ **breitbart-news**     | **the-wall-street-journal**
+ **cnbc**               | **the-washington-post**
+ **cnn**                | **time**
+ **google-news**        | **usa-today**
+ **independent**        | 
+-------------------------------------------------
+
+### ***news_saturation.sqlite***  
+##### The **gate-keeper** data base
+This [**SQLite**](https://www.sqlite.org/) data base contains news data retrieved with the **NewsAPI_call.R** script. This data base is currently being used for the sole purpose of receiving data. It stores new data from dozens of API calls a day.
+
+### ***news_saturation (research).sqlite***   
+##### a data base for **exploratory data analysis (EDA)** and more
+The "receiving"" data base is copied over to the research data base a few times a day. The research database is meant to be queried and explored. 
+
+The "dueling sqlites" seemed like a practical option for now because we are not yet collecting large enough volumes of data to strain that setup much. But we'll see what the future holds =)
+
+### ***call_api.bat***
+##### scheduling batch files to automate the data pipeline. *Nice*...
+(Partially) overcoming my irrational phobias of linux and the command line has opened doors. Nobody said those doors wouldn't lead to solutions to problems that have been around for decades. 
+
+When **call_api** is executed it opens an instance of R and runs **NewsAPI_call.R**. 
+
+The power of scripts and batch files can be unleashed using scheduling tools already installed on major operating systems. If you are on **Windows**, use **Task Scheduler** to create and schedule tasks to run scripts. **Linux** users have **Cron**. 
+
+### ***copy_db.bat***
+##### "Perfect alignment!" -Symmetra
+This batch file overwrites the research sqlite data base with the most current live data base.  Right now I have this running 2-4 times a day - less frequently so the research data base's bandwidth can be used towards answering questions and making discoveries.
+
+
+
 
 
