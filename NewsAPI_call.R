@@ -10,6 +10,46 @@ source("D:/Projects/creds.R")
 
 setwd("D:/Projects/News-Saturation/")
   
+
+# function to  write results to database
+writeNews_sqlExpress <- function(df, db_connection){
+    
+    ##sets SQL server connection
+    myServer <- odbcDriverConnect(db_connection)
+    
+    #calls current database table 
+    oldTable <- sqlFetch(db, "top_news_full")
+    
+    # column names must align for joining
+    frameNames <- colnames(oldTable)
+    colnames(df)<- frameNames
+    
+    #prepares table for merge, sets classes to be the same
+    
+    oldTable[] <- lapply(oldTable, function(x) as.character(x))
+    df[] <- lapply(df, function(x) as.character(x))
+    
+    #updates tables where PKs match then creates intermediary table with non matching PKs
+    
+    #alternative method of using table of shite that is dif
+    
+    #intermediateTable<-anti_join(df,oldTable, by=  "articlestitle" )
+    
+    
+    finalTable <- rbind(oldTable,df, make.row.names=FALSE)
+    finalTable <- finalTable[with(finalTable, order(source,articlesauthor)),]
+    
+    
+    finalTable<- finalTable[!duplicated(finalTable$articlestitle),]
+    
+    
+    sqlDrop(myServer,"top_news_full")
+    sqlSave(myServer,finalTable,tablename = "top_news_full", rownames=FALSE)
+    
+    #close out connections 
+    odbcClose(myServer)
+}
+
 # access News API (https://newsapi.org/) to get headline articles
 sources <- c("associated-press","al-jazeera-english","bbc-news","bloomberg",
              "business-insider","breitbart-news","cnbc","cnn","google-news",
@@ -54,9 +94,7 @@ allData$articles.publishedAt <- gsub("T", " ",allData$articles.publishedAt)
 allData$articles.publishedAt[allData$articles.publishedAt=="list()"] <- NA
 allData$articles.publishedAt <- allData$articles.publishedAt %>% 
                                 as.POSIXct %>% as.character
-
-allData$articles.description <- as.character(allData$articles.description)
-
+  
 # -------------------------
 # sqlite database setup
   
@@ -75,12 +113,6 @@ old_table$retrieval.time <- as.character(old_table$retrieval.time)
 allData$articles.publishedAt <- as.character(allData$articles.publishedAt)
 allData$retrieval.time <- as.character(allData$retrieval.time)
 
-# make character so it can be compared to new data
-old_table$articles.description <- as.character(old_table$articles.description)
-
-# filter out articles that are not in old data using  article description
-allData <- allData[!(allData$articles.description %in% old_table$articles.description),]
-
 # join tables
 new_table <- full_join(old_table, allData)
 
@@ -89,5 +121,18 @@ new_table %>% dbWriteTable(conn = db, name = "top_news", overwrite=T)
 dbDisconnect(db)
 
 
+
+# -----------------------------
+# sebs sql server express setup
+
+
+# update DB
+#writeNews_sqlExpress(allData)
+  
+# intialize table before using function 
+#myServer <- odbcDriverConnect(db_connection)
+#sqlSave(myServer,myFrames,tablename = "top_news_full" , rownames=FALSE)
+  
+  
   
   
