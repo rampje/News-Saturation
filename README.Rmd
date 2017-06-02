@@ -1,13 +1,5 @@
 # **News Saturation**
 
-<<<<<<< HEAD
-This repository contains scripts and tools for research.
-
-
-## **Contents of repository**:
-
-#### What we are working with ...
-
 We are developing a data pipeline to collect headlines scraped from news sites using [**News API**](https://newsapi.org/). We want to explore the way different news sites go about alerting their followers and spreading information. A few informal questions:
 
 * How do different news sites design and adapt their menu of headlines for their followers? 
@@ -15,23 +7,12 @@ We are developing a data pipeline to collect headlines scraped from news sites u
 * What feelings are the headlines designed to cause (if any)? 
 * Which news sites are breaking new stories?
 
-<br>
-
-###  [***NewsAPI_call.R***](https://github.com/rampje/News-Saturation/blob/master/NewsAPI_call.R)
-This script pulls data from News API, processes it, and adds the newest articles to a data base containing all the news data we have collected so far. The R script relies on **packages** with functions to do the following with relative ease:
-=======
-We are developing a data pipeline to collect headlines scraped from news sites using [**News API**](https://newsapi.org/). We want to explore the way different news sites go about alerting their followers and spreading information. A few informal questions:
-
-* How do different news sites design and adapt their menu of headlines for their followers? 
-* How quickly do sites update their headlines with new stories? 
-* What feelings are the headlines designed to cause (if any)? 
-* Which news sites are breaking new stories?
 
 ## **Contents of repository**:
 
 ###  [***NewsAPI_call.R***](https://github.com/rampje/News-Saturation/blob/master/NewsAPI_call.R)
 This script pulls data from News API, processes it, and adds the newest articles to a data base containing all the news data we have collected so far. The R script relies on packages to do the following with relative ease:
->>>>>>> development
+
 
 1. retrieve latest data from News API - ***httr***
 
@@ -45,7 +26,7 @@ This script pulls data from News API, processes it, and adds the newest articles
 
 <br>
 
-A list of all the sites News API covers is [**here**](https://newsapi.org/sources). These are the 19 sources we are currently pulling news headlines from:
+We are currently using the following 19 sources to pull headlines from:
 
 
  **associated-press**   | **reuters**
@@ -60,6 +41,8 @@ A list of all the sites News API covers is [**here**](https://newsapi.org/source
  **google-news**        | **usa-today**
  **independent**        | 
 -------------------------------------------------
+
+A list of all the sites News API supports is [**here**](https://newsapi.org/sources). 
 
 ### ***news_saturation.sqlite***  
 ##### The **gate-keeper** data base
@@ -81,13 +64,7 @@ The power of scripts and batch files can be unleashed using scheduling tools alr
 
 ### ***copy_db.bat***
 ##### "Perfect alignment!" -Symmetra
-<<<<<<< HEAD
-This batch file overwrites the research sqlite data base with the most current gate-keeper data base.  Right now I have this running 2-4 times a day - less frequently so the research data base's bandwidth can be used towards answering questions and making discoveries.
-=======
 This batch file overwrites the research sqlite data base with the most current live data base.  Right now I have this running 2-4 times a day - less frequently so the research data base's bandwidth can be used towards answering questions and making discoveries.
->>>>>>> development
-
-
 
 
 

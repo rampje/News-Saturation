@@ -121,14 +121,6 @@ $(document).ready(function () {
 
 <div id="news-saturation" class="section level1">
 <h1><strong>News Saturation</strong></h1>
-<<<<<<< HEAD
-<p>This repository contains scripts and tools for research.</p>
-<div id="contents-of-repository" class="section level2">
-<h2><strong>Contents of repository</strong>:</h2>
-<div id="what-we-are-working-with" class="section level4">
-<h4>What we are working with …</h4>
-=======
->>>>>>> development
 <p>We are developing a data pipeline to collect headlines scraped from news sites using <a href="https://newsapi.org/"><strong>News API</strong></a>. We want to explore the way different news sites go about alerting their followers and spreading information. A few informal questions:</p>
 <ul>
 <li>How do different news sites design and adapt their menu of headlines for their followers?</li>
@@ -136,19 +128,11 @@ $(document).ready(function () {
 <li>What feelings are the headlines designed to cause (if any)?</li>
 <li>Which news sites are breaking new stories?</li>
 </ul>
-<<<<<<< HEAD
-<p><br></p>
-</div>
-<div id="newsapi_call.r" class="section level3">
-<h3><a href="https://github.com/rampje/News-Saturation/blob/master/NewsAPI_call.R"><strong><em>NewsAPI_call.R</em></strong></a></h3>
-<p>This script pulls data from News API, processes it, and adds the newest articles to a data base containing all the news data we have collected so far. The R script relies on <strong>packages</strong> with functions to do the following with relative ease:</p>
-=======
 <div id="contents-of-repository" class="section level2">
 <h2><strong>Contents of repository</strong>:</h2>
 <div id="newsapi_call.r" class="section level3">
 <h3><a href="https://github.com/rampje/News-Saturation/blob/master/NewsAPI_call.R"><strong><em>NewsAPI_call.R</em></strong></a></h3>
 <p>This script pulls data from News API, processes it, and adds the newest articles to a data base containing all the news data we have collected so far. The R script relies on packages to do the following with relative ease:</p>
->>>>>>> development
 <ol style="list-style-type: decimal">
 <li><p>retrieve latest data from News API - <strong><em>httr</em></strong></p></li>
 <li><p>convert JSON data to R-friendly data frame - <strong><em>jsonlite</em></strong></p></li>
@@ -157,7 +141,7 @@ $(document).ready(function () {
 <li><p>query and update the database - <strong><em>RODBC</em></strong></p></li>
 </ol>
 <p><br></p>
-<p>A list of all the sites News API covers is <a href="https://newsapi.org/sources"><strong>here</strong></a>. These are the 19 sources we are currently pulling news headlines from:</p>
+<p>We are currently using the following 19 sources to pull headlines from:</p>
 <table>
 <thead>
 <tr class="header">
@@ -205,6 +189,7 @@ $(document).ready(function () {
 </tbody>
 </table>
 <hr />
+<p>A list of all the sites News API supports is <a href="https://newsapi.org/sources"><strong>here</strong></a>.</p>
 </div>
 <div id="news_saturation.sqlite" class="section level3">
 <h3><strong><em>news_saturation.sqlite</em></strong></h3>
@@ -234,11 +219,7 @@ $(document).ready(function () {
 <h3><strong><em>copy_db.bat</em></strong></h3>
 <div id="perfect-alignment--symmetra" class="section level5">
 <h5>“Perfect alignment!” -Symmetra</h5>
-<<<<<<< HEAD
-<p>This batch file overwrites the research sqlite data base with the most current gate-keeper data base. Right now I have this running 2-4 times a day - less frequently so the research data base’s bandwidth can be used towards answering questions and making discoveries.</p>
-=======
 <p>This batch file overwrites the research sqlite data base with the most current live data base. Right now I have this running 2-4 times a day - less frequently so the research data base’s bandwidth can be used towards answering questions and making discoveries.</p>
->>>>>>> development
 </div>
 </div>
 </div>
