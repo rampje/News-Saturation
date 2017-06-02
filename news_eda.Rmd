@@ -1,0 +1,46 @@
+---
+title: "News EDA"
+output: html_notebook
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(RSQLite)
+library(tidyverse)
+library(tm)
+```
+
+#### Helper functions:
+
+```{r}
+txt_proc_pipeline <- function(x){
+  x %>% 
+    tolower %>% 
+    tm::removeWords(stopwords("english")) %>%
+    strsplit(" ") %>%
+    map(tm::removePunctuation)}
+```
+
+
+
+
+#### Initialize connection to the data base and query main table.
+
+```{r}
+db <- dbConnect(RSQLite::SQLite(), dbname="news_saturation (research).sqlite")
+news <- dbGetQuery(db, "SELECT * FROM top_news")
+```
+
+
+Get simple word counts
+
+```{r}
+all <- news$articles.description %>%
+       txt_proc_pipeline %>%
+       unlist
+all <- all[all != ""]
+```
+
+```{r}
+all %>% table %>% sort(decreasing = T) %>% data.frame %>% head(50)
+```
+

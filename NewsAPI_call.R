@@ -8,47 +8,8 @@ library(RODBCext)
 library(RSQLite)
 source("D:/Projects/creds.R")
 
+# required when script is invoked by task scheduler
 setwd("D:/Projects/News-Saturation/")
-  
-
-# function to  write results to database
-writeNews_sqlExpress <- function(df, db_connection){
-    
-    ##sets SQL server connection
-    myServer <- odbcDriverConnect(db_connection)
-    
-    #calls current database table 
-    oldTable <- sqlFetch(db, "top_news_full")
-    
-    # column names must align for joining
-    frameNames <- colnames(oldTable)
-    colnames(df)<- frameNames
-    
-    #prepares table for merge, sets classes to be the same
-    
-    oldTable[] <- lapply(oldTable, function(x) as.character(x))
-    df[] <- lapply(df, function(x) as.character(x))
-    
-    #updates tables where PKs match then creates intermediary table with non matching PKs
-    
-    #alternative method of using table of shite that is dif
-    
-    #intermediateTable<-anti_join(df,oldTable, by=  "articlestitle" )
-    
-    
-    finalTable <- rbind(oldTable,df, make.row.names=FALSE)
-    finalTable <- finalTable[with(finalTable, order(source,articlesauthor)),]
-    
-    
-    finalTable<- finalTable[!duplicated(finalTable$articlestitle),]
-    
-    
-    sqlDrop(myServer,"top_news_full")
-    sqlSave(myServer,finalTable,tablename = "top_news_full", rownames=FALSE)
-    
-    #close out connections 
-    odbcClose(myServer)
-}
 
 # access News API (https://newsapi.org/) to get headline articles
 sources <- c("associated-press","al-jazeera-english","bbc-news","bloomberg",
